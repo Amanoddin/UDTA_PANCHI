@@ -28,14 +28,16 @@ pipe_list = []
 SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE,1200)
 # bg image
-background = pygame.image.load("bg.png")
+cx = 0
+cy = 0
+background = pygame.image.load("cloud_bg.jpg")
 
 # ground
 floor = pygame.image.load("Floor.png")
 gx = 0
 gy = 470
 def create_rect():
-    pipe_height = random.randint(200,420)
+    pipe_height = random.randint(220,420)
     pipe_heightchange = random.randint(520,600)
     pipe_rect_bottom = green_pipe.get_rect(midtop=(500, pipe_height))
     pipe_rect_top = green_pipe.get_rect(midtop=(500, pipe_height-pipe_heightchange))
@@ -62,10 +64,12 @@ def bird(x, y):
 def ground(x,y):
     screen.blit(floor,(x,y))
 
+def cloud(x,y):
+    screen.blit(background, (x, y))
 running = True
 starting = True
 while starting:
-    screen.blit(background, (0, 0))
+    cloud(cx,cy)
     enter_text(textX, textY)
     ground(gx, gy)
     pygame.display.update()
@@ -78,7 +82,11 @@ while starting:
                 starting = False
                 while running:
                     # bg image
-                    screen.blit(background, (0, 0))
+                    cloud(cx,cy)
+                    cloud(cx + 400,cy)
+                    cx -= 1
+                    if cx<=-400:
+                        cx = 0
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             running = False
